@@ -1,17 +1,23 @@
 import { getLatestOffers } from "@/api/offer";
+import { useDebounce } from "@/utils/useDebounce";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, Stack } from "expo-router";
-import { Text, StyleSheet, ScrollView, View, Pressable } from "react-native";
+import { useEffect, useState } from "react";
+import { Text, StyleSheet, ScrollView, View, TextInput } from "react-native";
 
 export default function Page() {
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
+
   const offers = useSuspenseQuery({
-    queryKey: ["latestOffers"],
-    queryFn: getLatestOffers,
+    queryKey: ["latestOffers", debouncedSearch],
+    queryFn: ({ queryKey: [key, search] }) => getLatestOffers({ search }),
   });
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Stack.Screen options={{ title: "Offers Market" }} />
+      <TextInput value={search} onChangeText={setSearch} />
       <Text style={styles.heading}>Latest offers</Text>
       {offers.data.items.map((offer) => (
         <View key={offer.Id} style={styles.card}>

@@ -21,6 +21,19 @@ interface Offer {
   BrandName: string;
 }
 
-export async function getLatestOffers(): Promise<PagedResult<Offer>> {
-  return fetch(`${API_URL}/offers`).then((response) => response.json());
+type GetLatestOffersParams = {
+  search?: string;
+};
+
+export async function getLatestOffers({
+  search,
+}: GetLatestOffersParams): Promise<PagedResult<Offer>> {
+  const params = new URLSearchParams();
+  if (search) {
+    params.set("q", search);
+  }
+
+  return fetch(`${API_URL}/offers?${params.toString()}`).then((response) =>
+    response.json()
+  );
 }
