@@ -2,17 +2,50 @@ import { getLatestOffers } from "@/api/offer";
 import { useDebounce } from "@/utils/useDebounce";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, Stack } from "expo-router";
-import { useEffect, useState } from "react";
-import { Text, StyleSheet, ScrollView, View, TextInput } from "react-native";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Text,
+  StyleSheet,
+  ScrollView,
+  View,
+  TextInput,
+  Pressable,
+} from "react-native";
 
 export default function Page() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
+  const [page, setPage] = useState(1);
 
   const offers = useSuspenseQuery({
-    queryKey: ["latestOffers", debouncedSearch],
-    queryFn: ({ queryKey: [key, search] }) => getLatestOffers({ search }),
+    queryKey: ["latestOffers", debouncedSearch, page] as const,
+    queryFn: ({ queryKey: [key, search, page] }) =>
+      getLatestOffers({ search, page }),
   });
+
+  const prevPageBtn = useMemo(() => {
+    if (page === 1) {
+      return null;
+    }
+
+    return (
+      <Pressable onPress={() => setPage(page - 1)}>
+        <Text>Previous page</Text>
+      </Pressable>
+    );
+  }, [page]);
+
+  const nextPageBtn = useMemo(() => {
+    if (page >= offers.data.total) {
+      return null;
+    }
+
+    return (
+      <Pressable onPress={() => setPage(page + 1)}>
+        <Text>Next page</Text>
+      </Pressable>
+    );
+  }, [page, offers.data.total]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -26,6 +59,13 @@ export default function Page() {
           <Text style={styles.price}>{printPrice(offer.Price)}</Text>
         </View>
       ))}
+      <View>
+        {prevPageBtn}
+        <Text>
+          Page {page} of {offers.data.total}
+        </Text>
+        {nextPageBtn}
+      </View>
     </ScrollView>
   );
 }
