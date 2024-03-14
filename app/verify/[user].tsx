@@ -1,7 +1,4 @@
-import {
-  CognitoIdentityProviderClient,
-  ConfirmSignUpCommand,
-} from "@aws-sdk/client-cognito-identity-provider";
+import { verifySignUp } from "@/api/auth";
 import { Stack, router, useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { Pressable, TextInput, View, Text } from "react-native";
@@ -24,14 +21,16 @@ export default function VerifyEmailPage() {
 
   const onVerify = useCallback(() => {
     setLoading(true);
-    dummyVerifySignUp({ username: parsedUser, code: verificationCode })
+    verifySignUp({ username: parsedUser, code: verificationCode })
       .then(() => {
         router.push("/login");
       })
+      // TODO: handle auth errors
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, [verificationCode]);
 
+  // TODO: add correct input types
   return (
     <View>
       <Stack.Screen options={{ title: "Verify Email" }} />
@@ -45,33 +44,4 @@ export default function VerifyEmailPage() {
       </Pressable>
     </View>
   );
-}
-
-type VerifySignUpInput = {
-  username: string;
-  code: string;
-};
-
-const defaultRegion = "us-east-1";
-const clientId = "4cbm3h5ptvv9sh8s8t9p87qstl";
-
-async function dummyVerifySignUp(input: VerifySignUpInput) {
-  console.log("Verifying with", input);
-  return Promise.resolve();
-}
-
-async function verifySignUp(input: VerifySignUpInput) {
-  // TODO: must reuse client from sign-up.tsx
-  const client = new CognitoIdentityProviderClient({
-    region: defaultRegion,
-  });
-
-  const command = new ConfirmSignUpCommand({
-    ClientId: clientId,
-    Username: input.username,
-    ConfirmationCode: input.code,
-  });
-
-  const res = await client.send(command);
-  console.log(res);
 }
