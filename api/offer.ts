@@ -5,7 +5,7 @@ interface PagedResult<T> {
   total: number;
 }
 
-interface Offer {
+export interface Offer {
   Id: number;
   StoreId: number;
   BrandId: number;
