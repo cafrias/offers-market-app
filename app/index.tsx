@@ -1,17 +1,11 @@
 import { getLatestOffers } from "@/api/offer";
 import { OfferCard } from "@/components/OfferCard/OfferCard";
+import { PaginationControls } from "@/components/PaginationControls/PaginationControls";
 import { useDebounce } from "@/utils/useDebounce";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import { useMemo, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  ScrollView,
-  View,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { useCallback, useState } from "react";
+import { Text, StyleSheet, ScrollView, TextInput } from "react-native";
 
 export default function Page() {
   const [search, setSearch] = useState("");
@@ -23,30 +17,19 @@ export default function Page() {
     queryFn: ({ queryKey: [_, search, page] }) =>
       getLatestOffers({ search, page }),
   });
+  const { total } = offers.data;
 
-  const prevPageBtn = useMemo(() => {
-    if (page === 1) {
-      return null;
+  const onPrev = useCallback(() => {
+    if (page > 1) {
+      setPage((prev) => prev - 1);
     }
-
-    return (
-      <Pressable onPress={() => setPage(page - 1)}>
-        <Text>Previous page</Text>
-      </Pressable>
-    );
   }, [page]);
 
-  const nextPageBtn = useMemo(() => {
-    if (page >= offers.data.total) {
-      return null;
+  const onNext = useCallback(() => {
+    if (page < total) {
+      setPage((prev) => prev + 1);
     }
-
-    return (
-      <Pressable onPress={() => setPage(page + 1)}>
-        <Text>Next page</Text>
-      </Pressable>
-    );
-  }, [page, offers.data.total]);
+  }, [page, total]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -56,13 +39,12 @@ export default function Page() {
       {offers.data.items.map((offer) => {
         return <OfferCard key={offer.Id} offer={offer} />;
       })}
-      <View>
-        {prevPageBtn}
-        <Text>
-          Page {page} of {offers.data.total}
-        </Text>
-        {nextPageBtn}
-      </View>
+      <PaginationControls
+        onPrev={onPrev}
+        onNext={onNext}
+        total={total}
+        current={page}
+      />
     </ScrollView>
   );
 }
