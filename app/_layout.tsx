@@ -15,28 +15,28 @@ import { AuthProvider, useAuth } from "@/contexts/auth-context";
 const queryClient = new QueryClient();
 
 export default function HomeLayout() {
-  return (
-    <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
-        <Suspense fallback={<Text>Loading...</Text>}>
-          <AuthProvider>
-            <Stack
-              screenOptions={{
-                headerRight: HeaderRight,
-              }}
-            />
-          </AuthProvider>
-        </Suspense>
-      </QueryClientProvider>
-    </SafeAreaProvider>
-  );
+	return (
+		<SafeAreaProvider>
+			<QueryClientProvider client={queryClient}>
+				<Suspense fallback={<Text>Loading...</Text>}>
+					<AuthProvider>
+						<Stack
+							screenOptions={{
+								headerRight: HeaderRight,
+							}}
+						/>
+					</AuthProvider>
+				</Suspense>
+			</QueryClientProvider>
+		</SafeAreaProvider>
+	);
 }
 
 function HeaderRight() {
-  const { tokens } = useAuth();
-  if (tokens) {
-    return <Link href="/logout">Logout</Link>;
-  }
+	const { tokens } = useAuth();
+	if (tokens) {
+		return <Link href="/logout">Logout</Link>;
+	}
 
-  return <Link href="/login">Login</Link>;
+	return <Link href="/login">Login</Link>;
 }
