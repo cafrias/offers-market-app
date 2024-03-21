@@ -1,11 +1,12 @@
-import { getLatestOffers } from "@/api/offer";
-import { OfferCard } from "@/components/OfferCard/OfferCard";
-import { PaginationControls } from "@/components/PaginationControls/PaginationControls";
-import { useDebounce } from "@/utils/useDebounce";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useCallback, useState } from "react";
 import { Text, StyleSheet, ScrollView, TextInput } from "react-native";
+
+import { getLatestOffers } from "@/api/offer";
+import { OfferCard } from "@/components/OfferCard/OfferCard";
+import { PaginationControls } from "@/components/PaginationControls/PaginationControls";
+import { useDebounce } from "@/utils/useDebounce";
 
 export default function Page() {
   const [search, setSearch] = useState("");

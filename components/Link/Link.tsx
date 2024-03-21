@@ -1,5 +1,5 @@
-import { Text, StyleSheet } from "react-native";
 import { Link as ExpoLink } from "expo-router";
+import { Text, StyleSheet } from "react-native";
 
 export interface LinkProps {
   href: string;

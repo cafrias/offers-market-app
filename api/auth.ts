@@ -1,5 +1,12 @@
+import {
+  AuthFlowType,
+  CognitoIdentityProviderClient,
+  ConfirmSignUpCommand,
+  InitiateAuthCommand,
+  SignUpCommand,
+} from "@aws-sdk/client-cognito-identity-provider";
+
 import { COGNITO_CLIENT_ID, COGNITO_REGION } from "@/constants/config";
-import { AuthFlowType, CognitoIdentityProviderClient, ConfirmSignUpCommand, InitiateAuthCommand, SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
 
 export type Tokens = {
   idToken: string;
@@ -11,7 +18,6 @@ type LoginInput = {
   email: string;
   password: string;
 };
-
 
 const client = new CognitoIdentityProviderClient({
   region: COGNITO_REGION,
@@ -51,7 +57,6 @@ export async function login({ email, password }: LoginInput): Promise<Tokens> {
     refreshToken: RefreshToken,
   };
 }
-
 
 interface SignUpInput {
   email: string;

@@ -1,7 +1,8 @@
-import { verifySignUp } from "@/api/auth";
 import { Stack, router, useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { Pressable, TextInput, View, Text } from "react-native";
+
+import { verifySignUp } from "@/api/auth";
 
 type VerifyEmailParams = {
   user: string;

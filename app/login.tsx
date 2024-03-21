@@ -1,8 +1,9 @@
-import { login } from "@/api/auth";
-import { useAuth } from "@/contexts/auth-context";
 import { Link, Stack, router } from "expo-router";
 import { useCallback, useState } from "react";
 import { View, Text, TextInput, Pressable } from "react-native";
+
+import { login } from "@/api/auth";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

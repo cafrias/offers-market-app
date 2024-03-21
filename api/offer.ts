@@ -40,6 +40,6 @@ export async function getLatestOffers({
   }
 
   return fetch(`${API_URL}/offers?${params.toString()}`).then((response) =>
-    response.json()
+    response.json(),
   );
 }

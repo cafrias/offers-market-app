@@ -1,9 +1,10 @@
-import { Text, View } from "react-native";
-import { Stack, useLocalSearchParams } from "expo-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getStore } from "@/api/store";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
+import { Text, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+
+import { getStore } from "@/api/store";
 
 type StoreParams = {
   id: string;

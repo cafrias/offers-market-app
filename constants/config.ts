@@ -11,4 +11,3 @@ if (!cognitoClientId) {
 export const API_URL = process.env.EXPO_PUBLIC_API_URL;
 export const COGNITO_REGION = cognitoRegion;
 export const COGNITO_CLIENT_ID = cognitoClientId;
-

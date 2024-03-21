@@ -1,6 +1,7 @@
+import { Stack, router } from "expo-router";
 import { useCallback, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
-import { Stack, router } from "expo-router";
+
 import { signUp } from "@/api/auth";
 
 export default function SignUpPage() {

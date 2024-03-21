@@ -1,7 +1,9 @@
 import React from "react";
 import { Text, Image, StyleSheet, View } from "react-native";
-import { Offer } from "@/api/offer";
+
 import { Link } from "../Link/Link";
+
+import { Offer } from "@/api/offer";
 
 export interface OfferCardProps {
   offer: Offer;
